@@ -104,7 +104,11 @@ public class ScanDB {
 	}
 	
 	
-
+	public Cursor getReverseItems(){
+		String orderBy = COL_ROWID + " DESC";
+		Cursor cursor = _db.query(DB_TABLE, null, null, null, null, null, orderBy);
+		return cursor;
+	}
 
 	static class DbHelper extends SQLiteOpenHelper {
 

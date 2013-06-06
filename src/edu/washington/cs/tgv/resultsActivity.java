@@ -42,7 +42,7 @@ public class resultsActivity extends ListActivity {
         setContentView(R.layout.results);
 		items = new ScanDB(this);
 		items.open();
-		Cursor cursor = items.getItems();
+		Cursor cursor = items.getReverseItems();
 		showEvents(cursor);
     }
     
