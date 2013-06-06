@@ -32,6 +32,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
  
 public class scanActivity extends Activity {
 	
@@ -47,23 +48,25 @@ public class scanActivity extends Activity {
     
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
     	  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+    	  results = null;
     	  if (scanResult != null) {
     				results = scanResult.getContents();
+    				//Log.v("scanActivity.class", results);
     				if(results != null){
+    					Log.v("scanActivity.class", results);
     					items = new ScanDB(this);
     					items.open();
     					items.addText(results);
     					items.printTextDB();
     					items.close();
     				}
+    	  }if(results == null){
+    		  Log.v("scanActivity.class", "rescanning");
+    		  IntentIntegrator integrator = new IntentIntegrator(this);
+    			integrator.initiateScan();
     	  }else{
-    		  items = new ScanDB(this);
-			  items.open();
-			  items.addText("Nothing Scanned");
-			  items.printTextDB();
-			  items.close();
+    		  Intent resultsIntent = new Intent(this, MainActivity.class);
+    		  startActivity(resultsIntent);
     	  }
-    	  Intent resultsIntent = new Intent(this, MainActivity.class);
-    	  startActivity(resultsIntent);
     	}
 }
